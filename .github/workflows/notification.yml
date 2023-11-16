@@ -1,0 +1,25 @@
+name: Telegram notification
+
+on: [pull_request]
+
+jobs:
+  build:
+    - name: Checkout code
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Telegram Notify
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit.
+            
+            Repository: ${{ github.repository }}
+
+            Time: ${{ steps.time.outputs.time }}
+            
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
